@@ -1,0 +1,1 @@
+REVOKE ALL ON FUNCTION public.can_view_teacher(uuid, uuid) FROM anon;

@@ -5,7 +5,6 @@ import { toast } from "sonner";
 import { z } from "zod";
 
 import { supabase } from "@/integrations/supabase/client";
-import { lovable } from "@/integrations/lovable/index";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -47,7 +46,7 @@ function AuthPage() {
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
-      if (data.session) navigate({ to: "/portail", replace: true });
+      if (data.session) navigate({ to: "/", replace: true });
     });
   }, [navigate]);
 
@@ -66,7 +65,7 @@ function AuthPage() {
       return;
     }
     toast.success("Bienvenue sur TSS Platform.");
-    navigate({ to: "/portail", replace: true });
+    navigate({ to: "/", replace: true });
   };
 
   const signUp = async (event: React.FormEvent) => {
@@ -80,7 +79,7 @@ function AuthPage() {
     const { error } = await supabase.auth.signUp({
       ...parsed.data,
       options: {
-        emailRedirectTo: `${window.location.origin}/portail`,
+        emailRedirectTo: `${window.location.origin}/`,
         data: { first_name: firstName, last_name: lastName },
       },
     });
@@ -90,20 +89,6 @@ function AuthPage() {
       return;
     }
     toast.success("Compte créé. Vous pouvez maintenant vous connecter.");
-  };
-
-  const signInWithGoogle = async () => {
-    setLoading(true);
-    const result = await lovable.auth.signInWithOAuth("google", {
-      redirect_uri: window.location.origin,
-    });
-    if (result.error) {
-      setLoading(false);
-      toast.error("La connexion Google a échoué.");
-      return;
-    }
-    if (result.redirected) return;
-    navigate({ to: "/portail", replace: true });
   };
 
   return (
@@ -230,12 +215,6 @@ function AuthPage() {
             </TabsContent>
           </Tabs>
 
-          <div className="my-5 flex items-center gap-3 text-xs text-muted-foreground">
-            <span className="h-px flex-1 bg-border" /> ou <span className="h-px flex-1 bg-border" />
-          </div>
-          <Button variant="outline" className="w-full" onClick={signInWithGoogle} disabled={loading}>
-            Continuer avec Google
-          </Button>
         </div>
       </section>
     </div>

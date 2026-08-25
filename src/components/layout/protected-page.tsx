@@ -36,7 +36,12 @@ export function ProtectedPage({
   }
 
   return (
-    <AppShell user={data} title={title} subtitle={subtitle} actions={actions}>
+    <AppShell
+      user={data}
+      title={title}
+      {...(subtitle ? { subtitle } : {})}
+      {...(actions ? { actions } : {})}
+    >
       {children(data)}
     </AppShell>
   );

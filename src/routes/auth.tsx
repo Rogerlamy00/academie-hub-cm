@@ -46,7 +46,7 @@ function AuthPage() {
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
-      if (data.session) navigate({ to: "/", replace: true });
+      if (data.session) navigate({ to: "/portail", replace: true });
     });
   }, [navigate]);
 
@@ -65,7 +65,7 @@ function AuthPage() {
       return;
     }
     toast.success("Bienvenue sur TSS Platform.");
-    navigate({ to: "/", replace: true });
+    navigate({ to: "/portail", replace: true });
   };
 
   const signUp = async (event: React.FormEvent) => {
@@ -79,7 +79,7 @@ function AuthPage() {
     const { error } = await supabase.auth.signUp({
       ...parsed.data,
       options: {
-        emailRedirectTo: `${window.location.origin}/`,
+        emailRedirectTo: `${window.location.origin}/portail`,
         data: { first_name: firstName, last_name: lastName },
       },
     });
